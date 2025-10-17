@@ -1,14 +1,15 @@
 {
-  "name": "Claude Code Toolkit",
+  "name": "claude-code-toolkit",
+  "owner": "johnrtipton",
   "description": "Professional toolkit of Claude Code skills for Django development, multi-tenant architecture, and software engineering best practices",
   "version": "1.0.0",
-  "skills": [
+  "plugins": [
     {
       "name": "django-best-practices",
       "path": "skills/django-best-practices",
       "description": "Django best practices for multi-tenant architecture. Provides templates, patterns, and tools for creating tenant-aware models, admin interfaces, and comprehensive tests.",
       "version": "1.0.0",
-      "author": "Your Team",
+      "author": "johnrtipton",
       "tags": ["django", "python", "multi-tenant", "database", "models", "admin", "testing"]
     }
   ]
