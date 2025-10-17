@@ -189,11 +189,11 @@ class SecurityAuditor:
 
         # Check HTTPS settings
         https_settings = {
-            'SECURE_SSL_REDIRECT': ('True', HIGH),
-            'SESSION_COOKIE_SECURE': ('True', HIGH),
-            'CSRF_COOKIE_SECURE': ('True', HIGH),
-            'SECURE_BROWSER_XSS_FILTER': ('True', MEDIUM),
-            'SECURE_CONTENT_TYPE_NOSNIFF': ('True', MEDIUM),
+            'SECURE_SSL_REDIRECT': ('True', Severity.HIGH),
+            'SESSION_COOKIE_SECURE': ('True', Severity.HIGH),
+            'CSRF_COOKIE_SECURE': ('True', Severity.HIGH),
+            'SECURE_BROWSER_XSS_FILTER': ('True', Severity.MEDIUM),
+            'SECURE_CONTENT_TYPE_NOSNIFF': ('True', Severity.MEDIUM),
         }
 
         for setting, (expected, severity) in https_settings.items():
