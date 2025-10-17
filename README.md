@@ -8,7 +8,7 @@ Professional toolkit of Claude Code skills for Django development, multi-tenant 
 
 ### django-skills
 
-Collection of Django development skills including comprehensive best practices for multi-tenant architecture.
+Collection of Django development skills including comprehensive best practices for multi-tenant architecture and security hardening.
 
 **Features:**
 - Templates for creating tenant-aware models
@@ -16,7 +16,12 @@ Collection of Django development skills including comprehensive best practices f
 - Comprehensive test suites with tenant isolation
 - Django migration best practices and patterns
 - Migration helper script with validation
-- Reference documentation for multi-tenant patterns
+- OWASP Top 10 security patterns for Django
+- Automated security auditor (settings, code, dependencies, multi-tenant)
+- Production-ready security settings templates
+- Custom security middleware examples
+- Comprehensive security test templates
+- Reference documentation for multi-tenant patterns and security
 - Code generation scripts
 
 **Use when:**
@@ -26,6 +31,10 @@ Collection of Django development skills including comprehensive best practices f
 - Creating or managing Django migrations
 - Working with multi-tenant data isolation
 - Optimizing Django queries
+- Securing Django applications for production
+- Auditing Django projects for security vulnerabilities
+- Implementing OWASP Top 10 protections
+- Managing secrets and sensitive configuration
 
 ## Installation
 
@@ -49,6 +58,7 @@ Collection of Django development skills including comprehensive best practices f
 
 This installs the Django skills collection, which includes:
 - `django-best-practices` - Multi-tenant architecture patterns and templates
+- `django-security` - Security best practices and automated security auditing
 
 ### Or install directly from local path:
 
@@ -71,6 +81,8 @@ To get the latest updates and new features (like the recently added migration pa
 ```
 
 After updating, the new features and improvements will be immediately available. Recent updates include:
+- Django security best practices and OWASP Top 10 patterns
+- Automated security auditor with multi-mode scanning
 - Django migration best practices and patterns
 - Migration helper script with validation
 - Data migration templates and checklists
@@ -84,6 +96,9 @@ Once installed, the skills will automatically activate when relevant. For exampl
 - "How do I test tenant isolation?"
 - "Help me create a data migration"
 - "Validate my migrations for multi-tenant best practices"
+- "Audit my Django project for security vulnerabilities"
+- "Show me how to secure my Django settings for production"
+- "How do I protect against SQL injection in Django?"
 
 ## Development
 
@@ -129,6 +144,19 @@ Collection of Django development skills for multi-tenant applications.
 - Code generation scripts
 - Migration helper with validation
 - Copy-paste templates
+
+**django-security** - Security hardening and vulnerability detection for Django applications.
+
+**Includes:**
+- OWASP Top 10 for Django guide (1,000+ lines)
+- Automated security auditor (settings, code, dependencies, multi-tenant)
+- Django security settings reference (900+ lines)
+- Multi-tenant security patterns (900+ lines)
+- Secrets management guide (800+ lines)
+- Production-ready settings template
+- Custom security middleware templates
+- Comprehensive security test templates
+- Pre-deployment security checklist
 
 ## Contributing
 
