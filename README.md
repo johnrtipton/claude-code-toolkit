@@ -57,18 +57,22 @@ Once installed, the skills will automatically activate when relevant. For exampl
 1. Create a new directory in `skills/`
 2. Add a `SKILL.md` file with YAML frontmatter
 3. Add any scripts, references, or assets
-4. Update `marketplace.json` with the new skill
+4. Update `.claude-plugin/marketplace.json` with the new skill
 5. Push to GitHub
 
-### Skill Structure
+### Repository Structure
 
 ```
-skills/
-└── your-skill-name/
-    ├── SKILL.md           # Main skill file (required)
-    ├── scripts/           # Executable code (optional)
-    ├── references/        # Documentation (optional)
-    └── assets/            # Templates/files (optional)
+claude-code-toolkit/
+├── .claude-plugin/
+│   └── marketplace.json   # Marketplace metadata (required)
+├── skills/
+│   └── your-skill-name/
+│       ├── SKILL.md       # Main skill file (required)
+│       ├── scripts/       # Executable code (optional)
+│       ├── references/    # Documentation (optional)
+│       └── assets/        # Templates/files (optional)
+└── README.md
 ```
 
 ## Skills in This Marketplace
