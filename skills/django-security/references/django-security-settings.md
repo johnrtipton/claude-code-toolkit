@@ -455,6 +455,44 @@ CSP_FORM_ACTION = ("'self'",)
 
 # Report violations
 CSP_REPORT_URI = '/csp-report/'
+
+# ⚠️  IMPORTANT: Report-only mode (django-csp 4.0+)
+# CONTENT_SECURITY_POLICY_REPORT_ONLY must be None or a dict (NOT a boolean)
+# ❌ WRONG: CONTENT_SECURITY_POLICY_REPORT_ONLY = DEBUG  # Causes AttributeError
+# ✅ CORRECT options:
+
+# Option 1: Don't use report-only mode (enforce CSP)
+# (Simply don't set CONTENT_SECURITY_POLICY_REPORT_ONLY)
+
+# Option 2: Use report-only mode with same policy
+CONTENT_SECURITY_POLICY_REPORT_ONLY = {
+    "DIRECTIVES": {
+        "default-src": ["'none'"],
+        "script-src": ["'self'"],
+        "style-src": ["'self'"],
+        # ... same as your CSP_* settings above
+    }
+}
+
+# Option 3: Conditional configuration (correct way)
+if DEBUG:
+    # Report-only in development
+    CONTENT_SECURITY_POLICY_REPORT_ONLY = {
+        "DIRECTIVES": {
+            "default-src": ["'none'"],
+            "script-src": ["'self'"],
+        }
+    }
+else:
+    # Enforce in production (don't set CONTENT_SECURITY_POLICY_REPORT_ONLY)
+    pass
+```
+
+**Common Mistake:**
+```python
+# ❌ DON'T DO THIS (django-csp 4.0+):
+CONTENT_SECURITY_POLICY_REPORT_ONLY = DEBUG
+# This causes: AttributeError: 'bool' object has no attribute 'get'
 ```
 
 ## Security Middleware

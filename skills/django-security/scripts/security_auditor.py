@@ -230,6 +230,18 @@ class SecurityAuditor:
                 auto_fixable=True
             ))
 
+        # Check for CSP report-only mode misconfiguration (django-csp 4.0+)
+        if re.search(r'CONTENT_SECURITY_POLICY_REPORT_ONLY\s*=\s*(True|False|DEBUG)', content):
+            self.add_issue(SecurityIssue(
+                severity=Severity.HIGH,
+                category="Settings",
+                title="CSP report-only mode misconfigured",
+                description="CONTENT_SECURITY_POLICY_REPORT_ONLY set to boolean (causes AttributeError in django-csp 4.0+)",
+                file_path=str(settings_path),
+                recommendation="Remove line or set to dict: CONTENT_SECURITY_POLICY_REPORT_ONLY = {'DIRECTIVES': {...}}",
+                auto_fixable=False
+            ))
+
     def scan_code(self, scan_dir: Optional[Path] = None) -> None:
         """
         Scan Python code for security vulnerabilities.
