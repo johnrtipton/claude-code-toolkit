@@ -11,12 +11,13 @@
   "plugins": [
     {
       "name": "django-skills",
-      "description": "Collection of Django development skills including best practices for multi-tenant architecture, model patterns, admin optimization, comprehensive testing, and security hardening",
+      "description": "Collection of Django development skills including best practices for multi-tenant architecture, model patterns, admin optimization, comprehensive testing, security hardening, and type safety with mypy",
       "source": "./",
       "strict": false,
       "skills": [
         "./skills/django-best-practices",
-        "./skills/django-security"
+        "./skills/django-security",
+        "./skills/django-typing"
       ]
     }
   ]

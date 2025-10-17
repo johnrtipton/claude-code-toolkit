@@ -1,0 +1,224 @@
+# Pre-commit hooks for Django projects with type checking
+#
+# Installation:
+#   1. pip install pre-commit
+#   2. Copy this file to your project root as .pre-commit-config.yaml
+#   3. Run: pre-commit install
+#   4. (Optional) Run on all files: pre-commit run --all-files
+#
+# Usage:
+#   - Hooks run automatically on git commit
+#   - Skip hooks: git commit --no-verify
+#   - Run manually: pre-commit run --all-files
+#   - Update hooks: pre-commit autoupdate
+
+repos:
+  # === General Hooks ===
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      # File checks
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-yaml
+        exclude: '^.*\.github/workflows/.*$'  # GitHub Actions may have template syntax
+      - id: check-json
+
+      # Python checks
+      - id: check-ast  # Validate Python syntax
+      - id: check-builtin-literals
+      - id: check-docstring-first
+      - id: debug-statements  # Check for pdb, breakpoint()
+      - id: name-tests-test  # Ensure test files are named properly
+        args: ['--pytest-test-first']
+
+      # Formatting
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+  # === Python Import Sorting ===
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ['--profile', 'black', '--line-length', '100']
+
+  # === Python Code Formatting ===
+  - repo: https://github.com/psf/black
+    rev: 24.1.1
+    hooks:
+      - id: black
+        language_version: python3.11
+        args: ['--line-length', '100']
+
+  # === Flake8 Linting ===
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        args: [
+          '--max-line-length=100',
+          '--extend-ignore=E203,E501,W503',  # Conflicts with black
+          '--exclude=migrations,venv,.venv,build,dist',
+        ]
+        additional_dependencies:
+          - flake8-bugbear
+          - flake8-comprehensions
+          - flake8-simplify
+
+  # === Type Checking with mypy ===
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        name: mypy (Django type checking)
+        # Run on Python files except migrations
+        files: '^(?!.*migrations/).*\.py$'
+        args: [
+          '--config-file=mypy.ini',  # Use your mypy.ini config
+          '--show-error-codes',
+          '--pretty',
+        ]
+        additional_dependencies:
+          - django-stubs>=4.2.7
+          - django-stubs-ext>=4.2.7
+          - djangorestframework-stubs>=3.14.5
+          - types-requests
+          - types-PyYAML
+          - types-redis
+          # Add other stub packages your project needs
+
+  # === Django-Specific Checks ===
+  - repo: local
+    hooks:
+      # Check for missing migrations
+      - id: django-check-migrations
+        name: Check for missing Django migrations
+        entry: python manage.py makemigrations --check --dry-run
+        language: system
+        types: [python]
+        pass_filenames: false
+        files: 'models\.py$'
+
+      # Django system checks
+      - id: django-check
+        name: Run Django system checks
+        entry: python manage.py check
+        language: system
+        types: [python]
+        pass_filenames: false
+
+  # === Security Checks ===
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.6
+    hooks:
+      - id: bandit
+        args: ['-ll', '--skip', 'B101,B601']  # Skip assert warnings and shell injection in tests
+        files: \.py$
+        exclude: 'tests/|migrations/'
+
+  # === Secrets Detection ===
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: 'package-lock.json|\.mypy_cache/|\.pytest_cache/'
+
+  # === Django Template Linting ===
+  - repo: https://github.com/Riverside-Healthcare/djLint
+    rev: v1.34.1
+    hooks:
+      - id: djlint-django
+        args: ['--reformat', '--indent', '2']
+        files: '\.html$'
+
+# === Pre-commit Configuration ===
+default_language_version:
+  python: python3.11
+
+# Don't fail on first error - show all errors
+fail_fast: false
+
+# === Exclude Patterns ===
+exclude: |
+  (?x)^(
+    .*migrations/.*|
+    \.venv/.*|
+    venv/.*|
+    \.mypy_cache/.*|
+    \.pytest_cache/.*|
+    build/.*|
+    dist/.*|
+    .*\.egg-info/.*
+  )$
+
+# === CI Integration ===
+# For use with pre-commit.ci (https://pre-commit.ci/)
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false
+
+# === Alternative: Lighter Configuration ===
+# If the above is too strict or slow, use this minimal configuration:
+#
+# repos:
+#   - repo: https://github.com/pre-commit/pre-commit-hooks
+#     rev: v4.5.0
+#     hooks:
+#       - id: trailing-whitespace
+#       - id: end-of-file-fixer
+#       - id: check-yaml
+#       - id: check-added-large-files
+#       - id: debug-statements
+#
+#   - repo: https://github.com/psf/black
+#     rev: 24.1.1
+#     hooks:
+#       - id: black
+#
+#   - repo: https://github.com/pre-commit/mirrors-mypy
+#     rev: v1.8.0
+#     hooks:
+#       - id: mypy
+#         files: '^(?!.*migrations/).*\.py$'
+#         additional_dependencies:
+#           - django-stubs
+#           - djangorestframework-stubs
+
+# === Notes ===
+# 1. First-time setup:
+#    pre-commit install
+#    pre-commit run --all-files
+#
+# 2. Skip hooks for a commit:
+#    git commit --no-verify
+#
+# 3. Run specific hook:
+#    pre-commit run mypy --all-files
+#
+# 4. Update hook versions:
+#    pre-commit autoupdate
+#
+# 5. Temporarily disable a hook:
+#    Add 'SKIP=mypy git commit' before your commit
+#
+# 6. For CI/CD, add this to your workflow:
+#    - name: Run pre-commit
+#      run: pre-commit run --all-files

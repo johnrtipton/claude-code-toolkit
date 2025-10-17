@@ -8,7 +8,7 @@ Professional toolkit of Claude Code skills for Django development, multi-tenant 
 
 ### django-skills
 
-Collection of Django development skills including comprehensive best practices for multi-tenant architecture and security hardening.
+Collection of Django development skills including comprehensive best practices for multi-tenant architecture, security hardening, and type safety.
 
 **Features:**
 - Templates for creating tenant-aware models
@@ -21,7 +21,13 @@ Collection of Django development skills including comprehensive best practices f
 - Production-ready security settings templates
 - Custom security middleware examples
 - Comprehensive security test templates
-- Reference documentation for multi-tenant patterns and security
+- Type safety with mypy and django-stubs
+- Automated type checker with helpful error explanations
+- Type hint generator for existing Django code
+- Mypy configuration validator
+- Comprehensive typing patterns for models, views, forms, DRF
+- Advanced typing patterns (Protocols, Generics, TypedDict)
+- Reference documentation for multi-tenant patterns, security, and typing
 - Code generation scripts
 
 **Use when:**
@@ -35,6 +41,11 @@ Collection of Django development skills including comprehensive best practices f
 - Auditing Django projects for security vulnerabilities
 - Implementing OWASP Top 10 protections
 - Managing secrets and sensitive configuration
+- Adding type hints to Django code
+- Configuring mypy for Django projects
+- Debugging mypy errors in Django
+- Implementing type-safe patterns with DRF
+- Setting up pre-commit hooks for type checking
 
 ## Installation
 
@@ -59,6 +70,7 @@ Collection of Django development skills including comprehensive best practices f
 This installs the Django skills collection, which includes:
 - `django-best-practices` - Multi-tenant architecture patterns and templates
 - `django-security` - Security best practices and automated security auditing
+- `django-typing` - Type safety with mypy, django-stubs, and automated type checking
 
 ### Or install directly from local path:
 
@@ -81,6 +93,9 @@ To get the latest updates and new features (like the recently added migration pa
 ```
 
 After updating, the new features and improvements will be immediately available. Recent updates include:
+- Django typing and mypy integration with automated tools
+- Type hint generator for existing Django code
+- Comprehensive typing patterns for DRF and multi-tenant architectures
 - Django security best practices and OWASP Top 10 patterns
 - Automated security auditor with multi-mode scanning
 - Django migration best practices and patterns
@@ -99,6 +114,11 @@ Once installed, the skills will automatically activate when relevant. For exampl
 - "Audit my Django project for security vulnerabilities"
 - "Show me how to secure my Django settings for production"
 - "How do I protect against SQL injection in Django?"
+- "Add type hints to my Django models"
+- "Set up mypy for my Django project"
+- "How do I type Django REST Framework serializers?"
+- "Fix this mypy error in my Django view"
+- "Generate type hints for my existing Django code"
 
 ## Development
 
@@ -157,6 +177,22 @@ Collection of Django development skills for multi-tenant applications.
 - Custom security middleware templates
 - Comprehensive security test templates
 - Pre-deployment security checklist
+
+**django-typing** - Type safety and mypy best practices for Django applications.
+
+**Includes:**
+- Complete Django typing guide (2,400+ lines)
+- Mypy configuration guide (1,500+ lines)
+- DRF typing patterns (2,400+ lines)
+- Advanced typing patterns (2,500+ lines) - Protocols, Generics, TypedDict
+- Multi-tenant typing guide (3,000+ lines)
+- Troubleshooting guide (3,300+ lines) - Common mypy errors and solutions
+- Automated typing checker with Django-specific error explanations
+- Type hint generator (auto-add hints to existing code)
+- Configuration validator (validates mypy setup)
+- Production-ready mypy.ini and pyproject.toml templates
+- Pre-commit hook configuration
+- Fully typed model, view, serializer, and manager templates
 
 ## Contributing
 
