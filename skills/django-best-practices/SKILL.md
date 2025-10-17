@@ -417,6 +417,151 @@ class MyModel(TenantAwareModel):
     objects = MyModelManager()
 ```
 
+## Creating and Managing Migrations
+
+### Quick Start with Migrations
+
+**Basic workflow:**
+
+```bash
+# 1. Make model changes in models.py
+
+# 2. Generate migration
+python manage.py makemigrations app_name
+
+# 3. Review generated migration file
+
+# 4. Test migration
+python manage.py migrate
+
+# 5. Test reversibility
+python manage.py migrate app_name previous_migration_name
+python manage.py migrate  # Re-apply
+```
+
+**Use the migration helper for validation:**
+
+```bash
+# Check status and validate
+python scripts/migration_helper.py status
+
+# Create migration with validation
+python scripts/migration_helper.py create app_name
+
+# Validate existing migrations
+python scripts/migration_helper.py validate
+```
+
+### Schema Migrations
+
+**Adding fields:**
+- Provide default value or make nullable
+- Consider tenant-first indexes for new fields
+- Review auto-generated migration before applying
+
+**Removing fields (two-step):**
+1. Make field nullable, deploy
+2. Remove field entirely in next release
+
+**Changing field types:**
+- Add new field → data migration → remove old field → rename new field
+
+**Adding indexes:**
+```python
+class Meta:
+    indexes = [
+        # Always put tenant first!
+        models.Index(fields=['tenant', 'status', '-created_at']),
+    ]
+```
+
+### Data Migrations
+
+**Create empty migration:**
+```bash
+python manage.py makemigrations --empty app_name --name populate_field
+```
+
+**Use the template:** Copy `assets/data_migration_template.py` for comprehensive examples.
+
+**Key principles:**
+- Always use `apps.get_model()` (never import models directly)
+- Batch large updates to avoid memory issues
+- Provide reverse function for reversibility
+- Handle null/missing data gracefully
+
+**Example:**
+```python
+def forward(apps, schema_editor):
+    MyModel = apps.get_model('myapp', 'MyModel')
+
+    for obj in MyModel.objects.iterator(chunk_size=1000):
+        obj.new_field = obj.old_field.upper()
+        obj.save(update_fields=['new_field'])
+
+def reverse(apps, schema_editor):
+    MyModel = apps.get_model('myapp', 'MyModel')
+
+    for obj in MyModel.objects.iterator(chunk_size=1000):
+        obj.old_field = obj.new_field.lower()
+        obj.save(update_fields=['old_field'])
+
+class Migration(migrations.Migration):
+    operations = [
+        migrations.RunPython(forward, reverse),
+    ]
+```
+
+### Multi-Tenant Migration Patterns
+
+**Adding tenant support to existing models (4-step process):**
+
+1. Add nullable tenant FK
+2. Data migration to assign default tenant
+3. Make tenant required
+4. Add tenant-first indexes and constraints
+
+See `references/migration-patterns.md` for complete examples.
+
+### Migration Best Practices
+
+**Always do:**
+- ✅ Review generated migrations before committing
+- ✅ Test reversibility (migrate backward then forward)
+- ✅ Use apps.get_model() in data migrations
+- ✅ Put tenant first in all composite indexes
+- ✅ Batch large data updates
+- ✅ Test on production-like data
+
+**Never do:**
+- ❌ Edit applied migrations (create new one instead)
+- ❌ Import models directly in migrations
+- ❌ Skip testing reversibility
+- ❌ Forget tenant in indexes/constraints
+- ❌ Use --fake without understanding implications
+
+### Migration Resources
+
+**Checklist:** Use `assets/schema_migration_checklist.md` for common scenarios:
+- Adding/removing fields
+- Changing field types
+- Adding indexes and constraints
+- Data migrations
+- Multi-tenant migrations
+
+**Reference:** See `references/migration-patterns.md` for:
+- Detailed migration patterns
+- Complex scenarios
+- Troubleshooting guide
+- Advanced techniques
+
+**Helper script:** `scripts/migration_helper.py` validates migrations and checks for:
+- Tenant-first indexes
+- Unique constraints with tenant
+- Direct model imports
+- Missing reverse functions
+- Common pitfalls
+
 ## Critical Requirements
 
 **Always follow these rules:**
@@ -460,6 +605,26 @@ python scripts/generate_model.py notifications Notification \
     --with-tests
 ```
 
+**`migration_helper.py`** - Django migration helper with validation and best practice checks
+
+Usage:
+```bash
+# Check migration status
+python scripts/migration_helper.py status
+
+# Create migration with validation
+python scripts/migration_helper.py create app_name
+
+# Validate existing migrations
+python scripts/migration_helper.py validate
+
+# Check for conflicts
+python scripts/migration_helper.py check-conflicts
+
+# Show SQL for migration
+python scripts/migration_helper.py sql app_name migration_number
+```
+
 ### assets/
 
 **Copy-paste templates for quick development:**
@@ -467,6 +632,8 @@ python scripts/generate_model.py notifications Notification \
 - `model_template.py` - Complete model template with all best practices
 - `admin_template.py` - Admin interface template with optimization
 - `test_template.py` - Comprehensive test suite template
+- `data_migration_template.py` - Data migration template with RunPython examples
+- `schema_migration_checklist.md` - Checklist for common migration scenarios
 
 Copy these templates and customize for your specific model.
 
@@ -480,15 +647,23 @@ Copy these templates and customize for your specific model.
   - Middleware integration
   - Query patterns
   - Testing multi-tenancy
-  - Migration patterns
+  - Multi-tenant migration patterns
 
 - `model-patterns.md` - Django model best practices
   - Model structure and organization
   - Field patterns and choices
   - Meta options (indexes, constraints, ordering)
   - Validation patterns
-  - Custom managers and querysets
-  - Performance optimization
+
+- `migration-patterns.md` - Django migration comprehensive guide
+  - Schema migrations (adding/removing/altering fields, indexes, constraints)
+  - Data migrations (RunPython, RunSQL patterns)
+  - Multi-tenant migration patterns
+  - Migration dependencies and ordering
+  - Reversible migrations
+  - Testing migrations
+  - Squashing migrations
+  - Troubleshooting (conflicts, rollbacks, debugging)
 
 - `admin-patterns.md` - Django admin best practices
   - List display and filters

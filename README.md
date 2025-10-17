@@ -14,6 +14,8 @@ Collection of Django development skills including comprehensive best practices f
 - Templates for creating tenant-aware models
 - Admin interface patterns with query optimization
 - Comprehensive test suites with tenant isolation
+- Django migration best practices and patterns
+- Migration helper script with validation
 - Reference documentation for multi-tenant patterns
 - Code generation scripts
 
@@ -21,6 +23,7 @@ Collection of Django development skills including comprehensive best practices f
 - Creating new Django models
 - Building admin interfaces
 - Writing tests for Django applications
+- Creating or managing Django migrations
 - Working with multi-tenant data isolation
 - Optimizing Django queries
 
@@ -102,8 +105,10 @@ Collection of Django development skills for multi-tenant applications.
 - Multi-tenant architecture guide
 - Model patterns and validation
 - Admin interface optimization
+- Django migration patterns and best practices
 - Testing strategies
 - Code generation scripts
+- Migration helper with validation
 - Copy-paste templates
 
 ## Contributing
