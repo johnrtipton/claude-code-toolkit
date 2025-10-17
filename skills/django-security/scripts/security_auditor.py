@@ -728,26 +728,38 @@ Examples:
     auto_fix = args.auto_fix and not args.report_only
     auditor = SecurityAuditor(args.project_root, auto_fix=auto_fix)
 
+    # For structured formats (json, html), send diagnostic messages to stderr
+    # so only clean output goes to stdout
+    def log(msg):
+        if args.format in ['json', 'html']:
+            print(msg, file=sys.stderr)
+        else:
+            print(msg)
+
     # Run scans
     if args.scan in ['settings', 'all']:
-        print("🔍 Scanning Django settings...")
+        log("🔍 Scanning Django settings...")
         auditor.scan_settings()
 
     if args.scan in ['code', 'all']:
-        print("🔍 Scanning code for vulnerabilities...")
+        log("🔍 Scanning code for vulnerabilities...")
         auditor.scan_code()
 
     if args.scan in ['dependencies', 'all']:
-        print("🔍 Checking dependencies...")
+        log("🔍 Checking dependencies...")
         auditor.scan_dependencies()
 
     if args.scan in ['multi-tenant', 'all']:
-        print("🔍 Checking multi-tenant security...")
+        log("🔍 Checking multi-tenant security...")
         auditor.scan_multi_tenant()
 
     # Generate and display report
     report = auditor.generate_report(format=args.format)
-    print("\n" + report)
+    if args.format == 'json':
+        # For JSON, print without extra newline to keep output clean
+        print(report)
+    else:
+        print("\n" + report)
 
     # Determine exit code
     if args.fail_on:
