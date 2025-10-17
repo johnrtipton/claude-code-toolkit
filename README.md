@@ -58,6 +58,23 @@ cd ~/claude-code-toolkit
 /plugin install .
 ```
 
+## Updating
+
+To get the latest updates and new features (like the recently added migration patterns):
+
+```bash
+# Update all plugins from all marketplaces
+/plugin update
+
+# Or update a specific plugin
+/plugin update django-skills
+```
+
+After updating, the new features and improvements will be immediately available. Recent updates include:
+- Django migration best practices and patterns
+- Migration helper script with validation
+- Data migration templates and checklists
+
 ## Usage
 
 Once installed, the skills will automatically activate when relevant. For example:
@@ -65,6 +82,8 @@ Once installed, the skills will automatically activate when relevant. For exampl
 - "Create a new Django model for notifications"
 - "Show me the admin interface pattern"
 - "How do I test tenant isolation?"
+- "Help me create a data migration"
+- "Validate my migrations for multi-tenant best practices"
 
 ## Development
 
