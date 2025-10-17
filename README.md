@@ -2,11 +2,13 @@
 
 Professional toolkit of Claude Code skills for Django development, multi-tenant architecture, and software engineering best practices.
 
-## Available Skills
+> **Note:** This marketplace contains **plugins** (collections of related skills). When you install a plugin like `django-skills`, you get all the individual skills in that collection.
 
-### django-best-practices
+## Available Plugins
 
-Comprehensive Django best practices skill for multi-tenant architecture.
+### django-skills
+
+Collection of Django development skills including comprehensive best practices for multi-tenant architecture.
 
 **Features:**
 - Templates for creating tenant-aware models
@@ -30,16 +32,27 @@ Comprehensive Django best practices skill for multi-tenant architecture.
 /plugin marketplace add https://github.com/johnrtipton/claude-code-toolkit
 ```
 
-### Install the skill:
+### List available plugins:
 
 ```bash
-/plugin install django-best-practices
+/plugin marketplace list claude-code-toolkit
 ```
+
+### Install the Django skills plugin:
+
+```bash
+/plugin install django-skills
+```
+
+This installs the Django skills collection, which includes:
+- `django-best-practices` - Multi-tenant architecture patterns and templates
 
 ### Or install directly from local path:
 
 ```bash
-/plugin install /path/to/claude-code-toolkit/skills/django-best-practices
+# For development - install from local directory
+cd ~/claude-code-toolkit
+/plugin install .
 ```
 
 ## Usage
@@ -75,11 +88,15 @@ claude-code-toolkit/
 └── README.md
 ```
 
-## Skills in This Marketplace
+## Plugins in This Marketplace
 
-### django-best-practices (v1.0.0)
+### django-skills (v1.0.0)
 
-Django patterns and best practices for multi-tenant applications.
+Collection of Django development skills for multi-tenant applications.
+
+#### Included Skills:
+
+**django-best-practices** - Django patterns and best practices for multi-tenant applications.
 
 **Includes:**
 - Multi-tenant architecture guide
