@@ -207,7 +207,7 @@ class SecurityAuditor:
                     recommendation=f"Add {setting} = {expected}",
                     auto_fixable=True
                 ))
-            elif re.search(f r'{setting}\s*=\s*False', content):
+            elif re.search(f'{setting}\\s*=\\s*False', content):
                 self.add_issue(SecurityIssue(
                     severity=Severity.HIGH,
                     category="Settings",
