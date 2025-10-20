@@ -205,4 +205,6 @@ To add a skill to this marketplace:
 
 ## License
 
-[Your License Here]
+BSD 3-Clause License - See [LICENSE](LICENSE) file for details.
+
+This project uses the same license as Django to maintain consistency with the Django ecosystem.
